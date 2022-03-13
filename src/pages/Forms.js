@@ -6,7 +6,7 @@ function Forms(props) {
   const addressInputRef = useRef();
   const descriptionInputRef = useRef();
 
-  function SubmitHandler(event) {
+  async function SubmitHandler(event)  {
     event.preventDefault();
     const enterTitle = titleInputRef.current.value;
     const enterImage = imageInputRef.current.value;
@@ -20,8 +20,19 @@ function Forms(props) {
       description: enterDescription,
     };
     console.log(MeetupObjectData);
-    
-    props.onAddMeetup(MeetupObjectData)
+    let datasend = await fetch(
+      "https://react-from-starting-default-rtdb.firebaseio.com/meetups.json",
+      {
+        method: "POST",
+        body: JSON.stringify(MeetupObjectData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("datasend", await datasend.json());
+
+    // props.onAddMeetup(MeetupObjectData)
   }
   return (
     <>
